@@ -3,21 +3,21 @@ info:
   title: OpenAPI definition
   version: v0
 servers:
-- url: http://localhost:8080
-  description: Generated server url
+  - url: http://localhost:8080
+    description: Generated server url
 paths:
   /api/v1/vehicles/{id}:
     get:
       tags:
-      - vehicle-controller
+        - vehicle-controller
       operationId: getVehicle
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -27,20 +27,20 @@ paths:
                 $ref: '#/components/schemas/VehicleResponse'
     put:
       tags:
-      - vehicle-controller
+        - vehicle-controller
       operationId: updateVehicle
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateVehicleRequest'
+              $ref: '#/components/schemas/VehicleRequest'
         required: true
       responses:
         "200":
@@ -51,30 +51,30 @@ paths:
                 $ref: '#/components/schemas/VehicleResponse'
     delete:
       tags:
-      - vehicle-controller
+        - vehicle-controller
       operationId: deleteVehicle
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
   /api/v1/customers/{id}:
     get:
       tags:
-      - customer-controller
+        - customer-controller
       operationId: getCustomer
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -84,20 +84,20 @@ paths:
                 $ref: '#/components/schemas/CustomerResponse'
     put:
       tags:
-      - customer-controller
+        - customer-controller
       operationId: updateCustomer
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateCustomerRequest'
+              $ref: '#/components/schemas/CustomerRequest'
         required: true
       responses:
         "200":
@@ -108,22 +108,22 @@ paths:
                 $ref: '#/components/schemas/CustomerResponse'
     delete:
       tags:
-      - customer-controller
+        - customer-controller
       operationId: deleteCustomer
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
   /api/v1/vehicles:
     get:
       tags:
-      - vehicle-controller
+        - vehicle-controller
       operationId: listVehicles
       responses:
         "200":
@@ -136,13 +136,13 @@ paths:
                   $ref: '#/components/schemas/VehicleResponse'
     post:
       tags:
-      - vehicle-controller
+        - vehicle-controller
       operationId: createVehicle
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateVehicleRequest'
+              $ref: '#/components/schemas/VehicleRequest'
         required: true
       responses:
         "200":
@@ -154,7 +154,7 @@ paths:
   /api/v1/vehicles/bookings:
     post:
       tags:
-      - vehicle-controller
+        - vehicle-controller
       operationId: createBooking
       requestBody:
         content:
@@ -173,7 +173,7 @@ paths:
   /api/v1/customers:
     get:
       tags:
-      - customer-controller
+        - customer-controller
       operationId: listCustomers
       responses:
         "200":
@@ -186,13 +186,13 @@ paths:
                   $ref: '#/components/schemas/CustomerResponse'
     post:
       tags:
-      - customer-controller
+        - customer-controller
       operationId: createCustomer
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateCustomerRequest'
+              $ref: '#/components/schemas/CustomerRequest'
         required: true
       responses:
         "200":
@@ -204,15 +204,15 @@ paths:
   /api/v1/vehicles/bookings/{id}:
     get:
       tags:
-      - vehicle-controller
+        - vehicle-controller
       operationId: getBookingDetails
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-          format: uuid
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: OK
@@ -222,7 +222,12 @@ paths:
                 $ref: '#/components/schemas/BookingResponse'
 components:
   schemas:
-    UpdateVehicleRequest:
+    VehicleRequest:
+      required:
+        - segment
+        - status
+        - type
+        - vin
       type: object
       properties:
         type:
@@ -230,25 +235,27 @@ components:
         segment:
           type: string
           enum:
-          - ECONOMY
-          - COMPACT
-          - MEDIUM
-          - LARGE
-          - LUXURY
-          - COMMERCIAL
+            - ECONOMY
+            - COMPACT
+            - MEDIUM
+            - LARGE
+            - LUXURY
+            - COMMERCIAL
         vin:
           type: string
         modelYear:
+          maximum: 3000
+          minimum: 1886
           type: integer
           format: int32
         status:
           type: string
           enum:
-          - AVAILABLE
-          - RESERVED
-          - RENTED
-          - MAINTENANCE
-          - OUT_OF_SERVICE
+            - AVAILABLE
+            - RESERVED
+            - RENTED
+            - MAINTENANCE
+            - OUT_OF_SERVICE
     VehicleResponse:
       type: object
       properties:
@@ -260,12 +267,12 @@ components:
         segment:
           type: string
           enum:
-          - ECONOMY
-          - COMPACT
-          - MEDIUM
-          - LARGE
-          - LUXURY
-          - COMMERCIAL
+            - ECONOMY
+            - COMPACT
+            - MEDIUM
+            - LARGE
+            - LUXURY
+            - COMMERCIAL
         vin:
           type: string
         modelYear:
@@ -274,12 +281,18 @@ components:
         status:
           type: string
           enum:
-          - AVAILABLE
-          - RESERVED
-          - RENTED
-          - MAINTENANCE
-          - OUT_OF_SERVICE
-    UpdateCustomerRequest:
+            - AVAILABLE
+            - RESERVED
+            - RENTED
+            - MAINTENANCE
+            - OUT_OF_SERVICE
+    CustomerRequest:
+      required:
+        - drivingLicenseNumber
+        - email
+        - firstName
+        - lastName
+        - phoneNumber
       type: object
       properties:
         firstName:
@@ -287,6 +300,8 @@ components:
         lastName:
           type: string
         age:
+          maximum: 100
+          minimum: 0
           type: integer
           format: int32
         email:
@@ -294,6 +309,7 @@ components:
         drivingLicenseNumber:
           type: string
         phoneNumber:
+          pattern: "^(\\+?[0-9\\- ]{7,20})?$"
           type: string
     CustomerResponse:
       type: object
@@ -314,49 +330,15 @@ components:
           type: string
         phoneNumber:
           type: string
-    CreateVehicleRequest:
-      required:
-      - segment
-      - status
-      - type
-      - vin
-      type: object
-      properties:
-        type:
-          type: string
-        segment:
-          type: string
-          enum:
-          - ECONOMY
-          - COMPACT
-          - MEDIUM
-          - LARGE
-          - LUXURY
-          - COMMERCIAL
-        vin:
-          type: string
-        modelYear:
-          maximum: 3000
-          minimum: 1886
-          type: integer
-          format: int32
-        status:
-          type: string
-          enum:
-          - AVAILABLE
-          - RESERVED
-          - RENTED
-          - MAINTENANCE
-          - OUT_OF_SERVICE
     BookingRequest:
       required:
-      - age
-      - customerName
-      - licenseNumber
-      - reservationEndDate
-      - reservationStartDate
-      - segment
-      - vin
+        - age
+        - customerName
+        - licenseNumber
+        - reservationEndDate
+        - reservationStartDate
+        - segment
+        - vin
       type: object
       properties:
         licenseNumber:
@@ -377,36 +359,13 @@ components:
         segment:
           type: string
           enum:
-          - ECONOMY
-          - COMPACT
-          - MEDIUM
-          - LARGE
-          - LUXURY
-          - COMMERCIAL
+            - ECONOMY
+            - COMPACT
+            - MEDIUM
+            - LARGE
+            - LUXURY
+            - COMMERCIAL
         vin:
-          type: string
-    CreateCustomerRequest:
-      required:
-      - drivingLicenseNumber
-      - email
-      - firstName
-      - lastName
-      type: object
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        age:
-          maximum: 150
-          minimum: 0
-          type: integer
-          format: int32
-        email:
-          type: string
-        drivingLicenseNumber:
-          type: string
-        phoneNumber:
           type: string
     BookingResponse:
       type: object
@@ -430,11 +389,11 @@ components:
         segment:
           type: string
           enum:
-          - ECONOMY
-          - COMPACT
-          - MEDIUM
-          - LARGE
-          - LUXURY
-          - COMMERCIAL
+            - ECONOMY
+            - COMPACT
+            - MEDIUM
+            - LARGE
+            - LUXURY
+            - COMMERCIAL
         rentalPrice:
           type: number
