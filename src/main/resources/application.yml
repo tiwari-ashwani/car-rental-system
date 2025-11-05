@@ -1,0 +1,31 @@
+app:
+  driving-license-api:
+    base-url: ${DRIVING_LICENSE_BASE_URL:http://localhost:9090/driving-license-api}
+  car-pricing-api:
+    base-url: ${CAR_PRICING_BASE_URL:http://localhost:9090/car-rental-pricing-api}
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:carrentaldb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  spring:
+    profiles:
+      active=local:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

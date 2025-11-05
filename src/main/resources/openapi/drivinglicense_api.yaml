@@ -1,0 +1,75 @@
+openapi: 3.0.3
+info:
+  title: Driving License API
+  description: API to retrieve driving license owner details.
+  version: 1.0.0
+servers:
+  - url: http://localhost:9090/driving-license-api
+paths:
+  /license/details:
+    post:
+      summary: Retrieve driving license details
+      description: Accepts a driving license number and returns the license owner's name and license expiry date.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LicenseRequest'
+      responses:
+        '200':
+          description: Successful response with license details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LicenseResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Driving license not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: Driving license not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    LicenseRequest:
+      type: object
+      properties:
+        licenseNumber:
+          type: string
+          description: Driving license number
+          example: DL123456789
+      required:
+        - licenseNumber
+    LicenseResponse:
+      type: object
+      properties:
+        ownerName:
+          type: string
+          description: Name of the license owner
+          example: John Doe
+        expiryDate:
+          type: string
+          format: date
+          description: Expiry date of the driving license
+          example: 2025-12-31
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: Invalid license number

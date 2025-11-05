@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  # Car Rental Application
+  car-rental-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: car-rental-app
+    image: carrental-system:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - DRIVING_LICENSE_BASE_URL=http://localhost:9090/driving-license-api
+      - CAR_PRICING_BASE_URL=http://localhost:9090/car-rental-pricing-api
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:car_rental_db
+    depends_on:
+      - wiremock
+    networks:
+      - car-rental-net
+
+  # WireMock service (stub for Driving License API)
+  wiremock:
+    image: wiremock/wiremock:3.7.0
+    container_name: wiremock-license-api
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./wiremock:/home/wiremock
+    command: ["--verbose"]
+    networks:
+      - car-rental-net
+
+networks:
+  car-rental-net:
+    driver: bridge

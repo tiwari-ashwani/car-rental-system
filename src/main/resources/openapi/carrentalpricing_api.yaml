@@ -1,0 +1,68 @@
+openapi: 3.0.3
+info:
+  title: Car Rental Pricing API
+  description: API to retrieve per day rental rates based on car category.
+  version: 1.0.0
+servers:
+  - url: http://localhost:9090/car-rental-pricing-api
+paths:
+  /rental/rate:
+    post:
+      summary: Retrieve per day rental rate
+      description: Accepts a car category and returns the per day rental rate for the provided category.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RateRequest'
+      responses:
+        '200':
+          description: Successful response with rental rate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    RateRequest:
+      type: object
+      properties:
+        category:
+          type: string
+          description: Category of the car
+          enum: [SMALL, MEDIUM, LARGE, EXTRA_LARGE]
+          example: MEDIUM
+      required:
+        - category
+    RateResponse:
+      type: object
+      properties:
+        category:
+          type: string
+          description: Category of the car
+          example: MEDIUM
+        ratePerDay:
+          type: number
+          format: float
+          description: Per day rental rate for the provided category
+          example: 45.99
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: Invalid car category
