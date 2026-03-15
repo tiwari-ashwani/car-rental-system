@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/car-rental-pricing-api/rental/rate",
+    "bodyPatterns": [
+      { "matchesJsonPath": "$[?(@.category == 'UNKNOWN' || @.category == 'BAD' || @.category == 'INVALID')]" }
+    ],
+    "headers": {
+      "Content-Type": { "contains": "application/json" }
+    }
+  },
+  "response": {
+    "status": 400,
+    "headers": { "Content-Type": "application/json" },
+    "bodyFileName": "rate-error-invalid.json"
+  }
+}

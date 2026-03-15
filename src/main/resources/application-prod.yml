@@ -1,0 +1,48 @@
+app:
+  driving-license-api:
+    base-url: ${DRIVING_LICENSE_BASE_URL:https://api.mycompany.com/driving-license-service}
+
+  car-pricing-api:
+    base-url: ${CAR_PRICING_BASE_URL:https://api.mycompany.com/car-pricing-service}
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://mysql-prod.mycompany.com:3306/carrental?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${DB_USER:carrental_user}
+    password: ${DB_PASSWORD:StrongPassword123}
+    #river-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: false
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /car-rental
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+  health:
+    db:
+      enabled: true
+    defaults:
+      enabled: true

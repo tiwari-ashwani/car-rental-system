@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/car-rental-pricing-api/rental/rate",
+    "bodyPatterns": [
+      { "matchesJsonPath": "$[?(@.category == 'ECONOMY')]" }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "bodyFileName": "rate-response-economy.json"
+  }
+}
